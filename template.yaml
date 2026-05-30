@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SWARD - Lambda sincronización Moodle
+
+Globals:
+  Function:
+    Timeout: 60
+    Runtime: python3.11
+    Environment:
+      Variables:
+        LMS_SERVICE_URL: !Ref LmsServiceUrl
+
+Parameters:
+  LmsServiceUrl:
+    Type: String
+    Default: http://localhost:8002
+
+Resources:
+  MoodleSyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: handler.lambda_handler
+      Events:
+        Schedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(15 minutes)
+            Name: sward-moodle-sync-schedule
+            Description: Sincroniza datos académicos desde Moodle cada 15 minutos
