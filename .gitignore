@@ -221,3 +221,6 @@ __marimo__/
 
 # Claude Code
 .claude/
+
+# Excepciones para carpetas del proyecto
+!lib/
