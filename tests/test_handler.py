@@ -2,6 +2,7 @@
 
 Trigger: EventBridge schedule → POST /lms/sync
 """
+
 import json
 from unittest.mock import MagicMock, patch
 
