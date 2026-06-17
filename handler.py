@@ -8,6 +8,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 LMS_SERVICE_URL = os.environ.get("LMS_SERVICE_URL", "http://localhost:8002")
+LMS_SERVICE_KEY = os.environ.get("LMS_SERVICE_KEY", "")
 
 
 def handle_schedule(event: dict, context) -> dict:
@@ -16,7 +17,10 @@ def handle_schedule(event: dict, context) -> dict:
 
     url = f"{LMS_SERVICE_URL}/lms/sync"
     req = urllib.request.Request(
-        url, method="POST", headers={"Content-Type": "application/json"}, data=b"{}"
+        url,
+        method="POST",
+        headers={"Content-Type": "application/json", "X-Service-Key": LMS_SERVICE_KEY},
+        data=b"{}",
     )
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
