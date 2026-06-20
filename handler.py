@@ -23,7 +23,9 @@ def handle_schedule(event: dict, context) -> dict:
         data=b"{}",
     )
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
+        # 280s: el sync crece con la cantidad de estudiantes/cursos; debe ser
+        # menor al timeout del lambda (300s). Antes 60s → falsos timeouts.
+        with urllib.request.urlopen(req, timeout=280) as resp:
             body = json.loads(resp.read().decode())
             logger.info("Sincronización completada | resultado=%s", body)
             return {"statusCode": 200, "body": body}
